@@ -87,6 +87,7 @@ pipeline {
             branch: 'main'  
         
         // 이미지 태그 변경 후 메인 브랜치에 푸시
+        // ㅇ
         sh "git config --global user.email ${gitEmail}"
         sh "git config --global user.name ${gitName}"
         sh "cd prod && kustomize edit set image ${awsecrRegistry}:${currentBuild.number}"
