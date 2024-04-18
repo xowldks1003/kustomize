@@ -82,7 +82,7 @@ pipeline {
     stage('Deploy') { 
       steps {
         // git 계정 로그인, 해당 레포지토리의 main 브랜치에서 클론
-        git credentialsId: githubCredential,
+        git credentialsId: git1,
             url: 'https://github.com/xowldks1003/kustomize.git',
             branch: 'main'  
         
