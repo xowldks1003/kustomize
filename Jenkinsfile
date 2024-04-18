@@ -14,7 +14,7 @@ pipeline {
     gitName = 'xowldks1003'
   }
 
-  stages {
+    stages {
 
     // 깃허브 계정으로 레포지토리를 클론한다.
     stage('Checkout Application Git Branch') {
@@ -90,12 +90,18 @@ pipeline {
         sh "git config --global user.email ${gitEmail}"
         sh "git config --global user.name ${gitName}"
         sh "cd prod && kustomize edit set image ${awsecrRegistry}:${currentBuild.number}"
-        sh "git add -A"
+        sh "git add kustomization.yaml"
         sh "git status"
         sh "git commit -m 'update the image tag'"
         sh "git branch -M main"
-        sh "git push -u origin main"
-        
+              }
+    }
+    
+    stage('Push to Git Repository') {
+      steps {
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: githubCredential, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
+             sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/boulde/kustomize.git"       
+        }
       }
     }
   }
